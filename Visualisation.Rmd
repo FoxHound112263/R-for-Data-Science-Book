@@ -266,3 +266,5 @@ ggplot(data = nz,mapping = aes(x = long,y=lat,group=group))+
   coord_quickmap()
 ```
 
+
+
