@@ -122,3 +122,36 @@ filter(flights, is.na(dep_time))
 ```
 
 # Arrange rows
+
+```{r}
+# Can organize with multiple columns
+arrange(flights, year, month, day)
+```
+
+```{r}
+# Organize in descending order
+arrange(flights,desc(dep_delay))
+```
+
+Missing values are always sorted at the end
+
+# Exercises
+
+```{r}
+# All missing values at the start
+arrange(flights, desc(is.na(dep_delay)))
+```
+
+```{r}
+# most delayed flights
+arrange(flights, desc(arr_delay),desc(dep_delay))
+# least delayed flights
+arrange(flights, arr_delay,dep_delay)
+```
+
+```{r}
+# Fastest flights
+arrange(flights, air_time)
+```
+
+# Select columns
