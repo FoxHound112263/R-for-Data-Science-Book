@@ -1,0 +1,25 @@
+---
+title: '4-Workflow: basics'
+author: "Camilo Mayorquín"
+date: "March 7, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+# Coding basics
+
+object_name <- value
+Read in head as "object name gest value"
+Alt + minus sign: shortcut to '<-' 
+
+# What's in a name
+
+i_use_snake_case for long variable names
+
+```{r }
+
+```
+
