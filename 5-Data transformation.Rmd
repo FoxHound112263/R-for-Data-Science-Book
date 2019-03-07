@@ -1,0 +1,124 @@
+---
+title: "5-Data transformation"
+author: "Camilo Mayorquín"
+date: "March 7, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# nycflights13
+
+```{r }
+library(nycflights13)
+library(tidyverse)
+flights
+```
+
+# The power of dplyr
+
+Pick observations by their values - filter
+Reorder rows - arrange
+Pick variables by their names - select
+Create new variables with functions of existing variables - mutate
+Collapse many values down to a single summry - summarise
+group_by
+
+# Filter rows
+
+```{r}
+filter(flights, month == 1, day == 1)
+# This returns a new data frame
+```
+
+# Comparisons
+
+```{r}
+sqrt(2) ^ 2 == 2
+near(sqrt(2) ^ 2, 2)
+# R is too precise sometimes, use near()
+```
+
+# Logical opertator
+& 'and'
+| 'or'
+! 'not'
+
+```{r}
+filter(flights, month == 11 | month == 12)
+
+# Using this evaluates to TRUE in a numeric context
+filter(flights, month == 11 | 12)
+
+# Instead, use this short-hand
+nov_dec <- filter(flights, month %in% c(11,12))
+# Selects every row where x (month) is one of the values en y (11,12)
+```
+
+```{r}
+# Using De Morgan's law
+# flights that weren't delayed on arrival or departure by more than two hours
+filter(flights, dep_delay <=120 , arr_delay <= 120)
+filter(flights, !(dep_delay > 120 | arr_delay > 120))
+```
+
+# Missing values
+
+is.na() to determinate is a value is missing
+filter() excludes both FALSE and NA
+
+```{r}
+df <- tibble(x = c(1, NA, 3))
+filter(df, x > 1)
+# If NAs are to be kept, you need to ask for them explicity
+filter(df, is.na(x) | x > 1)
+```
+
+# Exercises
+
+```{r}
+# Flights had an arrival delay of 2 or more hours
+filter(flights, arr_delay >= 120)
+filter(flights, !(arr_delay < 120))
+```
+
+```{r}
+# Flights to Houston (IAH or HOU)
+filter(flights, dest %in% c('IAH','HOU'))
+filter(flights, dest == 'IAH' | dest == 'HOU'  )
+```
+
+```{r}
+# Operated by United, American or Delta
+filter(flights, carrier %in% c('UA','AA','DL'))
+```
+
+```{r}
+# Departed in summer (July, August, September)
+filter(flights, month %in% c(7,8,9))
+```
+
+```{r}
+# Arrived more than two hours late, but didn't leave late
+filter(flights, arr_delay > 120 & dep_delay <=0)
+```
+
+```{r}
+# Either both delay and more that 30 min flight time
+filter(flights, (arr_delay >= 60 | dep_delay >= 60) & air_time > 30)
+```
+
+```{r}
+# Departed between midnight and 6am (inclusive)
+filter(flights, hour >=6 & hour <= 24)
+filter(flights, between(x = hour,left = 6,right = 24))
+```
+
+```{r}
+# Files with a missing dep_time
+filter(flights, is.na(dep_time))
+```
+
+# Arrange rows
