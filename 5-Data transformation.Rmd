@@ -155,3 +155,51 @@ arrange(flights, air_time)
 ```
 
 # Select columns
+
+Narrow to the variables wanted. Subset the data.
+
+```{r}
+# General idea
+select(flights, year, month, day)
+# All columns between year and date
+select(flights, year:day)
+# All columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+Helper functions that can be used with select() :
+
+starts_with('abc')
+ends_with('xyz')
+constains('ijk')
+matches('(.)\\1') regular expression for matching any variables that contain repeated characters
+num_range('x', 1:3) : matches x1, x2 and x3
+
+select() can rename variables but rename() keeps all the variables not explicitly mencioned
+
+```{r}
+rename(flights, tail_num = tailnum)
+```
+
+everything() is useful for moving certain variables to the start of the data frame
+
+```{r}
+select(flights, time_hour, air_time, everything())
+```
+
+# EXERCISES
+
+```{r}
+
+# one_of evaluates() if the vector names correspond to actual variable names and selects them, if not, throws a warning but no error
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+
+select(flights, one_of(vars))
+
+```
+
+```{r}
+# Select anything that contains the string in its name, no matter if caps are present
+select(flights, contains("TIME"))
+```
+
