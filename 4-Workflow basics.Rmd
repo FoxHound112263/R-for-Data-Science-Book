@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = T)
 # Coding basics
 
 object_name <- value
-Read in head as "object name gest value"
+Read in head as "object name gets value"
 Alt + minus sign: shortcut to '<-' 
 
 # What's in a name
