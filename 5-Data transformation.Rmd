@@ -23,7 +23,7 @@ Pick observations by their values - filter
 Reorder rows - arrange
 Pick variables by their names - select
 Create new variables with functions of existing variables - mutate
-Collapse many values down to a single summry - summarise
+Collapse many values down to a single summary - summarise
 group_by
 
 # Filter rows
@@ -54,7 +54,7 @@ filter(flights, month == 11 | 12)
 
 # Instead, use this short-hand
 nov_dec <- filter(flights, month %in% c(11,12))
-# Selects every row where x (month) is one of the values en y (11,12)
+# Selects every row where x (month) is one of the values in y (11,12)
 ```
 
 ```{r}
@@ -66,7 +66,7 @@ filter(flights, !(dep_delay > 120 | arr_delay > 120))
 
 # Missing values
 
-is.na() to determinate is a value is missing
+is.na() to determinate if a value is missing
 filter() excludes both FALSE and NA
 
 ```{r}
