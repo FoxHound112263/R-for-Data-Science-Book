@@ -203,3 +203,50 @@ select(flights, one_of(vars))
 select(flights, contains("TIME"))
 ```
 
+# Add new variables
+
+```{r}
+flights_sml <- select(flights,
+  year:day,
+  ends_with('delay'),
+  distance,
+  air_time)
+
+# New columns with mutate
+mutate(flights_sml,
+  gain = dep_delay - arr_delay,
+  speed = distance / air_time * 60,
+  hours = air_time / 60,
+  gain_per_hour = gain / hours)
+```
+
+```{r}
+# Only keep new variables with transmute
+transmute(flights,
+  gain = dep_delay - arr_delay,
+  hours = air_time / 60,
+  gain_per_hour = gain / hours)
+```
+
+# Arithmetic operators are vectorised!
+
+# Modular arithmetic is really useful for breaking integers into pieces.
+%/% integer division
+%% remainder
+
+```{r}
+transmute(flights,
+  dep_time,
+  hour = dep_time %/% 100,
+  minute = dep_time %% 100)
+```
+
+lead() and lag() for leading and lagging values
+
+Running operations like cumsum() cumprod() cumin() cummax() cummean()
+
+```{r}
+# Ordering functions
+ # right after 
+```
+
