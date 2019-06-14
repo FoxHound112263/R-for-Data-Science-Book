@@ -43,7 +43,7 @@ ggplot(data = mpg) +
 ```
 
 ```{r}
-# Facet combination of two variables (discret)
+# Facet combination of two variables (discrete)
 ggplot(data = mpg) +
   geom_point(mapping = aes(x=displ,y=hwy)) +
   facet_grid(drv~cyl)
