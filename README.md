@@ -7,4 +7,4 @@ Book cover:
 
 taken from: https://r4ds.had.co.nz/
 
-Book so available for free in: https://r4ds.had.co.nz/
+Book also available for free at: https://r4ds.had.co.nz/
