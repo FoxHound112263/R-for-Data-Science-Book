@@ -390,7 +390,6 @@ flights %>%
   group_by(dest) %>% 
   filter(n() > 365)
 
-
 ```
 
 
