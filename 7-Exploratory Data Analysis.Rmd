@@ -1,0 +1,55 @@
+---
+title: "7-Exploratory Data Analysis"
+author: "Camilo Mayorquín"
+date: "6/17/2019"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+
+# Introduction
+
+- What type of variation occurs within my variables?
+- What type of covariation occurs between my variables?
+
+# Variation
+
+Variation is the tendency of the values of a variable to change from measurement from measurement.
+
+# Visualising distributions
+
+To examine the distribution of a categorical variable use a bar chart
+```{r}
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut))
+```
+
+You can compute the values manually with dplyr
+
+```{r}
+diamonds %>% 
+  count(cut)
+```
+
+To examine the distribution of a continuous variable use a histogram
+
+```{r}
+ggplot(data = diamonds) +
+  geom_histogram(mapping = aes(x = carat), binwidth = 0.5)
+```
+
+Can also be computed manually
+
+```{r}
+diamonds %>% 
+  count(cut_width(carat, 0.5))
+```
+
