@@ -381,4 +381,16 @@ not_cancelled %>%
   summarise(number = n())
 ```
 
-# Grouped mutates
+# Grouped mutates (and filters)
+
+```{r}
+# Find all groups bigger than a thereshold
+
+flights %>% 
+  group_by(dest) %>% 
+  filter(n() > 365)
+
+
+```
+
+
