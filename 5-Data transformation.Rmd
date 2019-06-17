@@ -287,3 +287,98 @@ delays <- flights %>%
 
 # Counts
 
+```{r}
+# Filter cancelled flights with NAs in delay
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+
+# Group by year, month, day and mean of dep_delay
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay))
+
+# Group by tailnum, and summarise delay and count
+delays <- not_cancelled %>% 
+  group_by(tailnum) %>% 
+  summarise(
+    delay = mean(arr_delay, na.rm = TRUE),
+    n = n()
+  )
+
+# Get rid of the groups with the samllest number of observations so you can see more of the pattern and less of the extreme variation
+delays %>% 
+  filter(n > 25) %>%
+  ggplot(mapping = aes(x = n, y = delay)) +
+    geom_point(alpha = 1/10)
+```
+
+Unique values
+```{r}
+# Which destinations have the most carriers?
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarise(carriers = n_distinct(carrier)) %>% 
+  arrange(desc(carriers))
+```
+
+If you only want to count dplyr provides a simple helper
+
+```{r}
+not_cancelled %>% 
+  count(dest)
+```
+
+A weight variable can also be provided
+```{r}
+not_cancelled %>% 
+  count(tailnum, wt = distance)
+```
+
+Logical values used with numeric functions are turned into 1 (T) and 0 (F). Sum gives the number of TRUEs
+
+```{r}
+# How many flights left before 5am?
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_early = sum(dep_time < 500))
+```
+
+# Grouping by multiple variables
+
+```{r}
+daily <- group_by(flights, year, month, day)
+# Remember: all between paranthesis automatically prints in console
+(per_day <- summarise(daily, flights = n()))
+```
+
+```{r}
+(per_month <- summarise(per_day, flights = sum(flights)))
+```
+
+```{r}
+(per_year <- summarise(per_month, flights = sum(flights)))
+```
+
+Have to be careful since the sum of groupwise sums is the overall sum, but the median of groupwise medians is not the overall median
+
+# Ungrouping
+
+```{r}
+daily %>% 
+  ungroup() %>% # no longer grouped by date
+  summarise(flights = n()) # all flights
+  
+```
+
+
+```{r}
+# Code that gives the same output as:
+not_cancelled %>% count(dest)
+
+# Solution
+not_cancelled %>%
+  group_by(dest) %>% 
+  summarise(number = n())
+```
+
+# Grouped mutates
