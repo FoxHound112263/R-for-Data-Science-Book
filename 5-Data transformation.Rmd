@@ -243,10 +243,47 @@ transmute(flights,
 
 lead() and lag() for leading and lagging values
 
-Running operations like cumsum() cumprod() cumin() cummax() cummean()
+Running operations like cumsum() cumprod() cumin() cummax() cummean
+
+Ranking
 
 ```{r}
-# Ordering functions
- # right after 
+y <-  c(1, 2, 2, NA, 3, 4)
+min_rank(y)
+
+row_number(y)
 ```
+
+# Group summaries with summarise()
+It collapses a data frame to a single row
+
+```{r}
+summarise(flights, delay = mean(dep_delay, na.rm = T))
+```
+
+summarise is most useful when paired with group_by()
+The following chunk gives average delay per date
+
+```{r}
+by_day <- group_by(flights, year, month, day)
+summarise(by_day, delay = mean(dep_delay, na.rm = T))
+
+```
+
+# Combining multiple operations with the powerful pipe
+The pipe %>% is read like "then"
+
+```{r}
+# Relationship between the distance and average delay for each location
+delays <- flights %>% 
+  group_by(dest) %>% 
+  summarise(
+    count = n(),
+    dist = mean(distance, na.rm = T),
+    delay = mean(arr_delay, na.rm = T)
+  ) %>% 
+  filter(count > 20, dest != "HNL" )
+```
+
+# Counts
 
