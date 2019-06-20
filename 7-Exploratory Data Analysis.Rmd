@@ -129,3 +129,13 @@ diamonds %>%
 ```
 
 # Missing values
+
+Dropping the entire row with strange values is not recommended. Instead replace these with missing values
+
+```{r}
+diamonds2 <- diamonds2 %>% 
+  # If y between this values replace with NA
+  # Else keep the same value
+  mutate(y = ifelse(y<3 | y>20, NA, y))
+```
+
