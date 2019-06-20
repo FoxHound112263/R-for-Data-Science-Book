@@ -53,4 +53,79 @@ diamonds %>%
   count(cut_width(carat, 0.5))
 ```
 
-Progress until here
+Zoom in to see different pattern
+
+```{r}
+smaller <- diamonds %>% 
+  filter(carat < 3)
+
+ggplot(data = smaller, mapping = aes(x = carat)) + geom_histogram(binwidth = 0.1)
+```
+
+To overlay multiple histograms is better to use geom_freqpoly as it does the same calculation
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = carat, colour = cut)) +
+  geom_freqpoly(binwidth = 0.1)
+```
+
+Search for patterns
+
+This plot for example appears to contain clusters
+```{r}
+ggplot(data = smaller, mapping = aes(x = carat)) +
+  geom_histogram(binwidth = 0.01)
+```
+
+Why two clusters in this plot?
+```{r}
+ggplot(data = faithful, mapping = aes(x = eruptions)) + 
+  geom_histogram(binwidth = 0.25)
+```
+
+Gotta check relationship between variables
+
+# Unusual values
+
+This plot shows an unusual wide limit for x axis
+```{r}
+ggplot(diamonds) +
+  geom_histogram(mapping = aes(x = y), binwidth = 0.5)
+```
+
+Zoom in to small values of the y axis to see
+
+```{r}
+ggplot(diamonds) + 
+  geom_histogram(mapping = aes(x = y), binwidth = 0.5) +
+  coord_cartesian(ylim = c(0,50))
+```
+
+We see there are unusual values of 0, ~30, ~60, we pluck them out with dplyr
+
+```{r}
+unusual <- diamonds %>% 
+  filter(y < 3 | y > 20) %>% 
+  select(price, x, y, z) %>% 
+  arrange(y)
+unusual
+# Diamonds with 0mm dimension, it must be incorrect
+```
+
+# Excercises
+
+Explore price distribution
+```{r}
+ggplot(diamonds) + 
+  geom_histogram(mapping = aes(x = price), binwidth = 100) +
+  coord_cartesian(ylim = c(0,200))
+```
+
+Count diamonds with 0.99 carats
+```{r}
+diamonds %>%
+  filter(carat == 0.99) %>% 
+  count()
+```
+
+# Missing values
