@@ -133,9 +133,54 @@ diamonds %>%
 Dropping the entire row with strange values is not recommended. Instead replace these with missing values
 
 ```{r}
-diamonds2 <- diamonds2 %>% 
+diamonds2 <- diamonds %>% 
   # If y between this values replace with NA
   # Else keep the same value
   mutate(y = ifelse(y<3 | y>20, NA, y))
 ```
+
+ggplot does not include missing values in the plot, but it warns that they have been removed
+
+```{r}
+ggplot(data = diamonds2, mapping = aes(x = x, y = y)) +
+  geom_point(na.rm=T)
+```
+
+In the flights data set, missing values for the dep_time variable indicate that the flight was cancelled. Let's compare the scheduled departed times for cancelled and non-cancelled times.
+
+```{r}
+flights %>% 
+  mutate(
+    cancelled = is.na(dep_time),
+    sched_hour = sched_dep_time %/% 100,
+    sched_min = sched_dep_time %% 100,
+    sched_dep_time = sched_hour + sched_min / 60
+  ) %>% 
+  ggplot(mapping = aes(sched_dep_time)) +
+  geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+```
+
+Excercises
+
+
+Missing values do not appear in barplot since they have no frequency
+```{r}
+flights %>% 
+  mutate(
+    cancelled = is.na(dep_time),
+    sched_hour = sched_dep_time %/% 100,
+    sched_min = sched_dep_time %% 100,
+    sched_dep_time = sched_hour + sched_min / 60
+  ) %>% 
+  ggplot(mapping = aes(sched_dep_time)) +
+  geom_bar(mapping = aes(colour = cancelled))
+```
+
+
+# Covariation
+
+Describes the variation between variables. Is the tendency for the values of two or more variables to vary together in a related way.
+
+Categorical and continuous variable
+
 
