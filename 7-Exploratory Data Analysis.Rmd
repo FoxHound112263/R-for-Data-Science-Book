@@ -183,4 +183,56 @@ Describes the variation between variables. Is the tendency for the values of two
 
 Categorical and continuous variable
 
+See the comparison between this type of variables using a frequency polygon makes it hard to see the difference if some groups are much smaller than others. For example:
 
+```{r}
+ggplot(data = diamonds, mapping = aes(x = price)) +
+  geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
+```
+
+It's hard to see the difference in distribution because the overall counts differ so much:
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(mapping = aes(x = cut))
+```
+
+To make the comparison easier we need to swap what is displayed on the y-axis. Instead of displaying count, we’ll display density, which is the count standardised so that the area under each frequency polygon is one.
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = price, y = ..density..)) +
+  geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
+```
+
+it appears that fair diamonds (the lowest quality) have the highest average price! But maybe that’s because frequency polygons are a little hard to interpret - there’s a lot going on in this plot.
+
+Another alternative is the BOXPLOT: gives a sense of the spread of the distribution and whether or not the distribution is symmetric about the median or skewed to one side.
+
+Distribution of price by cut using geom_boxplot():
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, y = price)) +
+  geom_boxplot()
+```
+
+We can see that better quality diamonds are cheaper on average!
+
+cut is an ordered factor. If you have a variable without such an intrinsic order, you might want to reorder them to make a more informative display.
+
+Let's see that with the class variable in the "mpg" dataset
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+  geom_boxplot()
+```
+
+To make the trend easier to read, we can reorder class based on the median value of hwy:
+
+```{r}
+ggplot(data = mpg) +
+  geom_boxplot(mapping = aes(x = reorder(class, hwy, FUN=median), y = hwy)) +
+  # For long name variables
+  coord_flip()
+```
+
+Excercises
